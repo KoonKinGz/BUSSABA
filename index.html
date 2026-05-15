@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BUSSABA ITEM CALCULATOR - LOCATION TRACKING</title>
+    <title>BUSSABA</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Google Font: Kanit -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Kanit', sans-serif; }
-        .tab-active { border-bottom: 3px solid #6366f1; color: #6366f1; font-weight: 600; }
+        body { 
+            font-family: 'Kanit', sans-serif; 
+        }
+        .tab-active { 
+            border-bottom: 3px solid #4f46e5; 
+            color: #4f46e5; 
+            font-weight: 600; 
+        }
+        /* Custom Color Palettes for Slots */
         .cp-1 { background-color: #fef2f2; color: #991b1b; border-color: #fecaca; }
         .cp-2 { background-color: #f0fdf4; color: #166534; border-color: #bbf7d0; }
         .cp-3 { background-color: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
@@ -21,83 +30,131 @@
         .cp-0 { background-color: #ecfeff; color: #155e75; border-color: #a5f3fc; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4 md:p-8 text-slate-800">
+<body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
 
-    <div class="max-w-6xl mx-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h2 class="text-2xl font-bold uppercase tracking-widest text-slate-700">BUSSABA CALCULATOR V3</h2>
-            <button onclick="resetData()" class="text-xs bg-red-50 text-red-500 px-4 py-2 rounded-xl hover:bg-red-100 transition-all font-bold">RESET ALL</button>
+    <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
+        
+        <!-- Header Section -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-slate-200">
+            <h2 class="text-3xl font-black uppercase tracking-wider text-slate-800">
+                🚀 BUSSABA
+            </h2>
+            <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                <button onclick="loadNamesFromGoogle('A')" class="flex-1 sm:flex-none text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all font-medium shadow-sm">
+                    📥 IMPORT NAME (G1)
+                </button>
+                <button onclick="loadNamesFromGoogle('B')" class="flex-1 sm:flex-none text-sm bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 active:scale-95 transition-all font-medium shadow-sm">
+                    📥 IMPORT NAME (G2)
+                </button>
+                <button onclick="resetData()" class="w-full sm:w-auto text-sm bg-rose-50 text-rose-600 px-5 py-2.5 rounded-xl hover:bg-rose-100 active:scale-95 transition-all font-medium text-center">
+                    RESET ALL
+                </button>
+            </div>
         </div>
 
         <!-- Input Section -->
-        <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200 mb-6">
-            <div class="mb-8 text-center md:text-left">
+        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-200/80 mb-8">
+            <!-- Total Stock Block -->
+            <div class="mb-8">
                 <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest flex items-center">
-                    <span class="w-1.5 h-4 bg-indigo-500 rounded-full mr-2"></span> คลังไอเทม (Total Stock)
+                    <span class="w-1.5 h-4 bg-indigo-600 rounded-full mr-2"></span> คลังไอเทม (Total Stock)
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="p-4 rounded-2xl border bg-purple-50/30 border-purple-100 text-center">
-                        <label class="block text-[10px] font-bold text-purple-600 mb-2 uppercase">Fragment</label>
-                        <input type="number" id="total_1" value="0" oninput="saveAndUpdate()" class="w-full bg-white border border-purple-200 rounded-xl p-2 text-center text-xl font-bold outline-none focus:ring-2 focus:ring-purple-400">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="p-4 rounded-2xl border bg-purple-50/20 border-purple-100 focus-within:border-purple-400 transition-all">
+                        <label class="block text-xs font-bold text-purple-600 mb-1.5 uppercase tracking-wide">Fragment</label>
+                        <input type="number" id="total_1" value="0" oninput="saveAndUpdate()" class="w-full bg-white text-slate-800 text-xl font-bold outline-none border-b-2 border-transparent focus:border-purple-500 pb-1">
                     </div>
-                    <div class="p-4 rounded-2xl border bg-amber-50/30 border-amber-100 text-center">
-                        <label class="block text-[10px] font-bold text-amber-600 mb-2 uppercase">Light-Dark</label>
-                        <input type="number" id="total_2" value="0" oninput="saveAndUpdate()" class="w-full bg-white border border-amber-200 rounded-xl p-2 text-center text-xl font-bold outline-none focus:ring-2 focus:ring-amber-400">
+                    <div class="p-4 rounded-2xl border bg-amber-50/20 border-amber-100 focus-within:border-amber-400 transition-all">
+                        <label class="block text-xs font-bold text-amber-600 mb-1.5 uppercase tracking-wide">Light-Dark</label>
+                        <input type="number" id="total_2" value="0" oninput="saveAndUpdate()" class="w-full bg-white text-slate-800 text-xl font-bold outline-none border-b-2 border-transparent focus:border-amber-500 pb-1">
                     </div>
-                    <div class="p-4 rounded-2xl border bg-blue-50/30 border-blue-100 text-center">
-                        <label class="block text-[10px] font-bold text-blue-600 mb-2 uppercase">Time-Space</label>
-                        <input type="number" id="total_3" value="0" oninput="saveAndUpdate()" class="w-full bg-white border border-blue-200 rounded-xl p-2 text-center text-xl font-bold outline-none focus:ring-2 focus:ring-blue-400">
+                    <div class="p-4 rounded-2xl border bg-blue-50/20 border-blue-100 focus-within:border-blue-400 transition-all">
+                        <label class="block text-xs font-bold text-blue-600 mb-1.5 uppercase tracking-wide">Time-Space</label>
+                        <input type="number" id="total_3" value="0" oninput="saveAndUpdate()" class="w-full bg-white text-slate-800 text-xl font-bold outline-none border-b-2 border-transparent focus:border-blue-500 pb-1">
                     </div>
                 </div>
             </div>
 
+            <!-- Groups Configuration Block -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Group 1 -->
-                <div class="p-5 border-2 border-indigo-50 rounded-3xl bg-indigo-50/10">
-                    <div class="font-bold text-indigo-700 uppercase mb-4 border-b border-indigo-100 pb-2">Group 1 (First Class)</div>
-                    <div class="grid grid-cols-3 gap-3 mb-4 text-center">
-                        <div><label class="block text-[9px] text-indigo-400 font-bold mb-1">FRAG/คน</label><input type="number" id="gA_p1" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-indigo-100 rounded-xl text-center text-sm font-bold outline-none"></div>
-                        <div><label class="block text-[9px] text-indigo-400 font-bold mb-1">LD/คน</label><input type="number" id="gA_p2" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-indigo-100 rounded-xl text-center text-sm font-bold outline-none"></div>
-                        <div><label class="block text-[9px] text-indigo-400 font-bold mb-1">TS/คน</label><input type="number" id="gA_p3" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-indigo-100 rounded-xl text-center text-sm font-bold outline-none"></div>
+                <div class="p-5 md:p-6 border border-slate-200 rounded-2xl bg-slate-50/50">
+                    <div class="font-bold text-indigo-600 uppercase mb-4 border-b border-slate-200 pb-2 flex items-center justify-between">
+                        <span>Group 1 </span>
+                        <span class="text-xs text-slate-400 font-normal">สัดส่วนต่อคน</span>
                     </div>
-                    <textarea id="gA_names" oninput="saveAndUpdate()" rows="4" class="w-full p-3 border border-indigo-100 rounded-xl text-sm focus:ring-2 focus:ring-indigo-300 outline-none" placeholder="รายชื่อกลุ่ม 1"></textarea>
+                    <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">FRAG</label>
+                            <input type="number" id="gA_p1" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">LD</label>
+                            <input type="number" id="gA_p2" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">TS</label>
+                            <input type="number" id="gA_p3" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all">
+                        </div>
+                    </div>
+                    <textarea id="gA_names" oninput="saveAndUpdate()" rows="4" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all placeholder:text-slate-400" placeholder="ใส่รายชื่อกลุ่ม 1 (ขึ้นบรรทัดใหม่ต่อ 1 ชื่อ)"></textarea>
                 </div>
+                
                 <!-- Group 2 -->
-                <div class="p-5 border-2 border-emerald-50 rounded-3xl bg-emerald-50/10">
-                    <div class="font-bold text-emerald-700 uppercase mb-4 border-b border-emerald-100 pb-2">Group 2 (Second Class)</div>
-                    <div class="grid grid-cols-3 gap-3 mb-4 text-center">
-                        <div><label class="block text-[9px] text-emerald-400 font-bold mb-1">FRAG/คน</label><input type="number" id="gB_p1" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-emerald-100 rounded-xl text-center text-sm font-bold outline-none"></div>
-                        <div><label class="block text-[9px] text-emerald-400 font-bold mb-1">LD/คน</label><input type="number" id="gB_p2" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-emerald-100 rounded-xl text-center text-sm font-bold outline-none"></div>
-                        <div><label class="block text-[9px] text-emerald-400 font-bold mb-1">TS/คน</label><input type="number" id="gB_p3" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-emerald-100 rounded-xl text-center text-sm font-bold outline-none"></div>
+                <div class="p-5 md:p-6 border border-slate-200 rounded-2xl bg-slate-50/50">
+                    <div class="font-bold text-emerald-600 uppercase mb-4 border-b border-slate-200 pb-2 flex items-center justify-between">
+                        <span>Group 2 </span>
+                        <span class="text-xs text-slate-400 font-normal">สัดส่วนต่อคน</span>
                     </div>
-                    <textarea id="gB_names" oninput="saveAndUpdate()" rows="4" class="w-full p-3 border border-emerald-100 rounded-xl text-sm focus:ring-2 focus:ring-emerald-300 outline-none" placeholder="รายชื่อกลุ่ม 2"></textarea>
+                    <div class="grid grid-cols-3 gap-3 mb-4 text-center">
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">FRAG</label>
+                            <input type="number" id="gB_p1" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">LD</label>
+                            <input type="number" id="gB_p2" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-slate-500 font-medium mb-1">TS</label>
+                            <input type="number" id="gB_p3" value="0" oninput="saveAndUpdate()" class="w-full p-2 border border-slate-200 rounded-xl text-center text-sm font-bold outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all">
+                        </div>
+                    </div>
+                    <textarea id="gB_names" oninput="saveAndUpdate()" rows="4" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 outline-none transition-all placeholder:text-slate-400" placeholder="ใส่รายชื่อกลุ่ม 2 (ขึ้นบรรทัดใหม่ต่อ 1 ชื่อ)"></textarea>
                 </div>
             </div>
         </div>
 
-        <!-- Tab selection -->
-        <div class="flex space-x-8 mb-6 border-b border-slate-200 text-sm pb-1 overflow-x-auto">
-            <button onclick="st(1)" id="t1" class="pb-2 px-4 transition-all tab-active whitespace-nowrap">Puppet Fragment</button>
-            <button onclick="st(2)" id="t2" class="pb-2 px-4 transition-all text-slate-400 whitespace-nowrap">Feathers (L-D & T-S)</button>
+        <!-- Tab Selection Navigation -->
+        <div class="flex space-x-6 mb-6 border-b border-slate-200 text-sm pb-px overflow-x-auto">
+            <button onclick="st(1)" id="t1" class="pb-3 px-2 transition-all tab-active whitespace-nowrap focus:outline-none">
+                🧩 Puppet Fragment
+            </button>
+            <button onclick="st(2)" id="t2" class="pb-3 px-2 transition-all text-slate-400 hover:text-slate-600 whitespace-nowrap focus:outline-none">
+                🪶 Feathers (L-D & T-S)
+            </button>
         </div>
 
-        <!-- Result Grid -->
-        <div id="res" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
+        <!-- Result Grid Display -->
+        <div id="res" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-10"></div>
 
-        <!-- SUMMARY SECTION (LOCATION TRACKING) -->
-        <div class="bg-slate-900 p-6 rounded-3xl shadow-xl text-white mb-20">
+        <!-- Summary Section (Location Tracking) -->
+        <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl text-white mb-12">
             <h3 class="text-xl font-bold mb-6 flex items-center">
-                <span class="w-2 h-6 bg-indigo-400 rounded-full mr-3"></span> 
-                สรุปตำแหน่งการแจกรายคน (Where to find)
+                <span class="w-2 h-6 bg-indigo-500 rounded-full mr-3"></span> 
+                📍 สรุปตำแหน่งการแจกรายคน 
             </h3>
             <div id="loc-summary" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
     </div>
 
+    <!-- Logical Scripts -->
     <script>
         let tab = 1;
 
-        function getValue(id) { return parseInt(document.getElementById(id).value) || 0; }
+        function getValue(id) { 
+            return parseInt(document.getElementById(id).value) || 0; 
+        }
 
         function saveAndUpdate() {
             const data = {
@@ -124,55 +181,141 @@
             update();
         }
 
-        function resetData() { if(confirm('ล้างข้อมูล?')) { localStorage.removeItem('bussaba_storage_v3'); location.reload(); } }
+        function resetData() { 
+            if(confirm('คุณต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?')) { 
+                localStorage.removeItem('bussaba_storage_v3'); 
+                location.reload(); 
+            } 
+        }
 
-        function st(n) { tab = n; update(); }
+        function st(n) { 
+            tab = n; 
+            update(); 
+        }
 
         function update() {
-            document.getElementById('t1').className = tab === 1 ? 'pb-2 px-4 transition-all tab-active whitespace-nowrap' : 'pb-2 px-4 transition-all text-slate-400 whitespace-nowrap';
-            document.getElementById('t2').className = tab === 2 ? 'pb-2 px-4 transition-all tab-active whitespace-nowrap' : 'pb-2 px-4 transition-all text-slate-400 whitespace-nowrap';
+            document.getElementById('t1').className = tab === 1
+                ? 'pb-3 px-2 transition-all tab-active whitespace-nowrap focus:outline-none'
+                : 'pb-3 px-2 transition-all text-slate-400 hover:text-slate-600 whitespace-nowrap focus:outline-none';
+
+            document.getElementById('t2').className = tab === 2
+                ? 'pb-3 px-2 transition-all tab-active whitespace-nowrap focus:outline-none'
+                : 'pb-3 px-2 transition-all text-slate-400 hover:text-slate-600 whitespace-nowrap focus:outline-none';
 
             const container = document.getElementById('res');
             const locContainer = document.getElementById('loc-summary');
-            container.innerHTML = ''; locContainer.innerHTML = '';
+
+            container.innerHTML = '';
+            locContainer.innerHTML = '';
 
             const t = [getValue('total_1'), getValue('total_2'), getValue('total_3')];
-            const namesA = document.getElementById('gA_names').value.split('\n').map(n => n.trim()).filter(n => n !== "");
-            const namesB = document.getElementById('gB_names').value.split('\n').map(n => n.trim()).filter(n => n !== "");
+
+            const namesA = [...new Set(document.getElementById('gA_names').value.split('\n').map(n => n.trim()).filter(n => n !== ''))];
+            const namesB = [...new Set(document.getElementById('gB_names').value.split('\n').map(n => n.trim()).filter(n => n !== ''))];
+
             const gA = { p: [getValue('gA_p1'), getValue('gA_p2'), getValue('gA_p3')] };
             const gB = { p: [getValue('gB_p1'), getValue('gB_p2'), getValue('gB_p3')] };
-            
+
             let allItems = [];
-            let personTracker = {}; // { "Name": { "LD": { startIdx, endIdx }, "TS": { startIdx, endIdx } } }
+            let personTracker = {};
 
             const logPos = (name, type, globalIdx) => {
                 if(!personTracker[name]) personTracker[name] = {};
-                if(!personTracker[name][type]) personTracker[name][type] = { start: globalIdx, end: globalIdx };
+                if(!personTracker[name][type]) {
+                    personTracker[name][type] = { start: globalIdx, end: globalIdx };
+                }
                 personTracker[name][type].end = globalIdx;
             };
 
+            const totalPeople = namesA.length + namesB.length;
+
+            const groupInfo = `
+                <div class="col-span-full grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
+                    <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4">
+                        <div class="text-xs text-indigo-500 font-bold uppercase tracking-wider mb-1">Group 1 Members</div>
+                        <div class="text-3xl font-black text-indigo-700">${namesA.length} <span class="text-sm font-normal text-indigo-500/80">คน</span></div>
+                    </div>
+                    <div class="bg-emerald-50/50 border border-emerald-100 rounded-2xl p-4">
+                        <div class="text-xs text-emerald-500 font-bold uppercase tracking-wider mb-1">Group 2 Members</div>
+                        <div class="text-3xl font-black text-emerald-700">${namesB.length} <span class="text-sm font-normal text-emerald-500/80">คน</span></div>
+                    </div>
+                    <div class="bg-slate-100 border border-slate-200 rounded-2xl p-4">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Total Members</div>
+                        <div class="text-3xl font-black text-slate-700">${totalPeople} <span class="text-sm font-normal text-slate-500">คน</span></div>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML += groupInfo;
+
+            // Build Items Logic
             if (tab === 1) {
                 let cur = 1;
                 namesA.forEach((name, i) => {
-                    for(let q=0; q < gA.p[0]; q++) if(cur <= t[0]) { logPos(name, 'FRAG', allItems.length + 1); allItems.push({ n: 'Fragment', id: cur++, o: name, c: `cp-${(i+1)%10}` }); }
+                    for(let q=0; q < gA.p[0]; q++) {
+                        if(cur <= t[0]) {
+                            logPos(name, 'FRAG', allItems.length + 1);
+                            allItems.push({ n: 'Fragment', id: cur++, o: name, c: `cp-${(i+1)%10}` });
+                        }
+                    }
                 });
                 namesB.forEach((name, i) => {
-                    for(let q=0; q < gB.p[0]; q++) if(cur <= t[0]) { logPos(name, 'FRAG', allItems.length + 1); allItems.push({ n: 'Fragment', id: cur++, o: name, c: `cp-${(i+6)%10}` }); }
+                    for(let q=0; q < gB.p[0]; q++) {
+                        if(cur <= t[0]) {
+                            logPos(name, 'FRAG', allItems.length + 1);
+                            allItems.push({ n: 'Fragment', id: cur++, o: name, c: `cp-${(i+6)%10}` });
+                        }
+                    }
                 });
-                while(cur <= t[0]) allItems.push({ n: 'Fragment', id: cur++, o: "เหลือ", c: "bg-white text-slate-300 border-dashed" });
+                while(cur <= t[0]) {
+                    allItems.push({ n: 'Fragment', id: cur++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
+                }
             } else {
-                let curLD = 1, curTS = 1;
-                // LD Loop
-                namesA.forEach((name, i) => { for(let q=0; q < gA.p[1]; q++) if(curLD <= t[1]) { logPos(name, 'LD', allItems.length + 1); allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+1)%10}` }); } });
-                namesB.forEach((name, i) => { for(let q=0; q < gB.p[1]; q++) if(curLD <= t[1]) { logPos(name, 'LD', allItems.length + 1); allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+6)%10}` }); } });
-                while(curLD <= t[1]) allItems.push({ n: 'LD', id: curLD++, o: "เหลือ", c: "bg-white text-slate-300 border-dashed" });
-                // TS Loop
-                namesA.forEach((name, i) => { for(let q=0; q < gA.p[2]; q++) if(curTS <= t[2]) { logPos(name, 'TS', allItems.length + 1); allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+1)%10}` }); } });
-                namesB.forEach((name, i) => { for(let q=0; q < gB.p[2]; q++) if(curTS <= t[2]) { logPos(name, 'TS', allItems.length + 1); allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+6)%10}` }); } });
-                while(curTS <= t[2]) allItems.push({ n: 'TS', id: curTS++, o: "เหลือ", c: "bg-white text-slate-300 border-dashed" });
+                let curLD = 1;
+                let curTS = 1;
+
+                namesA.forEach((name, i) => {
+                    for(let q=0; q < gA.p[1]; q++) {
+                        if(curLD <= t[1]) {
+                            logPos(name, 'LD', allItems.length + 1);
+                            allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+1)%10}` });
+                        }
+                    }
+                });
+                namesB.forEach((name, i) => {
+                    for(let q=0; q < gB.p[1]; q++) {
+                        if(curLD <= t[1]) {
+                            logPos(name, 'LD', allItems.length + 1);
+                            allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+6)%10}` });
+                        }
+                    }
+                });
+                while(curLD <= t[1]) {
+                    allItems.push({ n: 'LD', id: curLD++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
+                }
+
+                namesA.forEach((name, i) => {
+                    for(let q=0; q < gA.p[2]; q++) {
+                        if(curTS <= t[2]) {
+                            logPos(name, 'TS', allItems.length + 1);
+                            allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+1)%10}` });
+                        }
+                    }
+                });
+                namesB.forEach((name, i) => {
+                    for(let q=0; q < gB.p[2]; q++) {
+                        if(curTS <= t[2]) {
+                            logPos(name, 'TS', allItems.length + 1);
+                            allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+6)%10}` });
+                        }
+                    }
+                });
+                while(curTS <= t[2]) {
+                    allItems.push({ n: 'TS', id: curTS++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
+                }
             }
 
-            // Build Individual Summary with Location
+            // Render Location Summary
             Object.keys(personTracker).forEach(name => {
                 let detailsHTML = '';
                 Object.keys(personTracker[name]).forEach(type => {
@@ -183,45 +326,107 @@
                     const endSlot = (pos.end % 4 === 0) ? 4 : pos.end % 4;
 
                     detailsHTML += `
-                    <div class="mt-2 bg-slate-800 p-3 rounded-xl border border-slate-700">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-indigo-400 font-bold text-xs">${type}</span>
-                            <span class="text-[10px] text-slate-400">ลำดับ #${pos.start} - #${pos.end}</span>
+                        <div class="mt-2 bg-slate-800 p-3 rounded-xl border border-slate-700/60">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="text-indigo-400 font-bold text-xs tracking-wide">${type}</span>
+                                <span class="text-[10px] text-slate-400 font-mono bg-slate-900 px-1.5 py-0.5 rounded">#${pos.start} - #${pos.end}</span>
+                            </div>
+                            <div class="text-sm text-slate-300">
+                                หน้า <b class="text-white text-base font-semibold mx-0.5">${startPage}</b> ช่อง <b class="text-white text-base font-semibold mx-0.5">${startSlot}</b>
+                                <span class="text-slate-500 mx-1">→</span>
+                                หน้า <b class="text-white text-base font-semibold mx-0.5">${endPage}</b> ช่อง <b class="text-white text-base font-semibold mx-0.5">${endSlot}</b>
+                            </div>
                         </div>
-                        <div class="text-sm">
-                            หน้า <span class="text-white font-bold">${startPage}</span> ช่อง <span class="text-white font-bold">${startSlot}</span> 
-                            ถึง หน้า <span class="text-white font-bold">${endPage}</span> ช่อง <span class="text-white font-bold">${endSlot}</span>
-                        </div>
-                    </div>`;
+                    `;
                 });
 
                 locContainer.innerHTML += `
-                <div class="bg-slate-800/50 border border-slate-700 p-4 rounded-2xl">
-                    <div class="text-lg font-bold text-indigo-300 border-b border-slate-700 pb-2">${name}</div>
-                    ${detailsHTML}
-                </div>`;
+                    <div class="bg-slate-800/40 border border-slate-800 p-4 rounded-2xl hover:border-slate-700 transition-all">
+                        <div class="text-base font-bold text-indigo-200 border-b border-slate-800 pb-2 mb-2">
+                            👤 ${name}
+                        </div>
+                        ${detailsHTML}
+                    </div>
+                `;
             });
 
-            // Build Cards
+            // Render Output Cards per page
             for (let i = 0; i < allItems.length; i += 4) {
                 const chunk = allItems.slice(i, i + 4);
-                let html = `<div class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full">
-                    <div class="bg-slate-800 text-white p-4 flex justify-between items-center">
-                        <span class="text-xl font-black">PAGE ${Math.floor(i/4)+1}</span>
-                        <span class="bg-slate-900 text-indigo-300 px-2 py-1 rounded text-[10px]">#${i+1}</span>
-                    </div>
-                    <div class="p-3 space-y-2 flex-grow">`;
+                let html = `
+                    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover:shadow-md transition-all">
+                        <div class="bg-slate-800 text-white p-4 flex justify-between items-center">
+                            <span class="text-lg font-bold tracking-wide">PAGE ${Math.floor(i/4)+1}</span>
+                            <span class="bg-slate-900 text-indigo-300 px-2 py-0.5 rounded text-[11px] font-mono">#${i+1}</span>
+                        </div>
+                        <div class="p-3 space-y-2.5 flex-grow bg-slate-50/30">
+                `;
+
                 chunk.forEach((item, idx) => {
-                    html += `<div class="p-2 border rounded-xl ${item.c} flex flex-col min-h-[60px] shadow-sm relative">
-                        <span class="absolute top-1 right-2 text-[8px] font-bold opacity-30">SLOT ${idx+1}</span>
-                        <div class="text-[9px] font-bold opacity-60">${item.n} #${item.id}</div>
-                        <div class="text-[13px] font-bold truncate">${item.o}</div>
-                    </div>`;
+                    html += `
+                        <div class="p-3 border rounded-xl ${item.c} flex flex-col min-h-[68px] shadow-sm relative transition-all">
+                            <span class="absolute top-1.5 right-2 text-[8px] font-bold uppercase tracking-wider opacity-40">SLOT ${idx+1}</span>
+                            <div class="text-[10px] font-bold opacity-60 uppercase tracking-wide mb-0.5">${item.n} #${item.id}</div>
+                            <div class="text-sm font-bold truncate">${item.o}</div>
+                        </div>
+                    `;
                 });
-                for(let j=0; j < 4-chunk.length; j++) html += `<div class="h-[60px] border border-dashed border-slate-50 rounded-xl"></div>`;
+
                 container.innerHTML += html + `</div></div>`;
             }
         }
+
+        async function loadNamesFromGoogle(targetGroup){
+            try {
+                const sheetId = '1BsmxOXc1c7lgrcR59mIZM8sXQoM-YZrTACRRJ5-jw0w';
+                const gid = '588302956';
+                const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?gid=${gid}&tqx=out:json`;
+
+                const res = await fetch(url);
+                const text = await res.text();
+                const json = JSON.parse(text.substring(47).slice(0,-2));
+                const rows = json.table.rows;
+
+                let incomingNames = [];
+                rows.forEach(row => {
+                    if(!row.c) return;
+                    const cell = row.c[0];
+                    if(cell && cell.v){
+                        const value = String(cell.v).trim();
+                        if(value.toLowerCase() !== 'name' && value !== ''){
+                            incomingNames.push(value);
+                        }
+                    }
+                });
+
+                if (targetGroup === 'A') {
+                    // กลุ่ม 1: ใส่ชื่อทั้งหมดปกติ
+                    document.getElementById('gA_names').value = incomingNames.join('\n');
+                    saveAndUpdate();
+                    alert(`โหลดรายชื่อเข้ากลุ่ม 1 จำนวน ${incomingNames.length} คน สำเร็จเรียบร้อยแล้ว!`);
+                } else if (targetGroup === 'B') {
+                    // กลุ่ม 2: ดึงรายชื่อกลุ่ม 1 มาเช็กก่อนเพื่อไม่ให้ซ้ำกัน
+                    const currentG1Names = document.getElementById('gA_names').value
+                        .split('\n')
+                        .map(n => n.trim())
+                        .filter(n => n !== '');
+
+                    // กรองเอาเฉพาะชื่อที่ "ไม่มี" อยู่ในกลุ่ม 1
+                    const filteredNames = incomingNames.filter(name => !currentG1Names.includes(name));
+
+                    document.getElementById('gB_names').value = filteredNames.join('\n');
+                    saveAndUpdate();
+                    
+                    const skippedCount = incomingNames.length - filteredNames.length;
+                    alert(`โหลดรายชื่อเข้ากลุ่ม 2 สำเร็จ! \n- เพิ่มเข้ากลุ่ม 2: ${filteredNames.length} คน \n- ข้ามรายชื่อที่ซ้ำกับกลุ่ม 1: ${skippedCount} คน`);
+                }
+
+            } catch(err) {
+                console.error(err);
+                alert('ไม่สามารถโหลดข้อมูลจาก Google Sheet ได้ กรุณาตรวจสอบสิทธิ์การเข้าถึงลิงก์');
+            }
+        }
+
         window.onload = loadData;
     </script>
 </body>
