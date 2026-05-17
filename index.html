@@ -49,12 +49,22 @@
 
     <div class="max-w-6xl mx-auto px-4 py-8 md:py-12">
         
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-slate-200">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-slate-200">
             <h2 class="text-3xl font-black uppercase tracking-wider text-slate-800">🚀 BUSSABA</h2>
-            <div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
-                <button onclick="loadNamesFromGoogle('A')" class="flex-1 sm:flex-none text-sm bg-indigo-600 text-white px-4 py-2.5 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all font-medium shadow-sm">📥 IMPORT NAME (G1)</button>
-                <button onclick="loadNamesFromGoogle('B')" class="flex-1 sm:flex-none text-sm bg-emerald-600 text-white px-4 py-2.5 rounded-xl hover:bg-emerald-700 active:scale-95 transition-all font-medium shadow-sm">📥 IMPORT NAME (G2)</button>
-                <button onclick="resetData()" class="w-full sm:w-auto text-sm bg-rose-50 text-rose-600 px-5 py-2.5 rounded-xl hover:bg-rose-100 active:scale-95 transition-all font-medium text-center">RESET ALL</button>
+            
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                
+                <div class="flex items-center border border-indigo-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                    <button onclick="loadNamesFromGoogle('A')" class="whitespace-nowrap text-xs bg-indigo-600 text-white px-3 py-2.5 hover:bg-indigo-700 active:scale-95 transition-all font-medium">📥 IMPORT G1</button>
+                    <input type="number" id="import_limit_A" placeholder="ทั้งหมด" min="0" class="w-16 text-center text-xs font-bold outline-none text-indigo-600 px-1" title="ระบุจำนวนคนที่ต้องการดึง (ว่างไว้คือทั้งหมด)">
+                </div>
+
+                <div class="flex items-center border border-emerald-200 rounded-xl overflow-hidden bg-white shadow-sm">
+                    <button onclick="loadNamesFromGoogle('B')" class="whitespace-nowrap text-xs bg-emerald-600 text-white px-3 py-2.5 hover:bg-emerald-700 active:scale-95 transition-all font-medium">📥 IMPORT G2</button>
+                    <input type="number" id="import_limit_B" placeholder="ทั้งหมด" min="0" class="w-16 text-center text-xs font-bold outline-none text-emerald-600 px-1" title="ระบุจำนวนคนที่ต้องการดึง (ว่างไว้คือทั้งหมด)">
+                </div>
+
+                <button onclick="resetData()" class="text-sm bg-rose-50 text-rose-600 px-5 py-2.5 rounded-xl hover:bg-rose-100 active:scale-95 transition-all font-medium text-center shadow-sm">RESET ALL</button>
             </div>
         </div>
 
@@ -81,7 +91,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div class="p-5 md:p-6 border border-slate-200 rounded-2xl bg-slate-50/50">
-                    <div class="font-bold text-indigo-600 uppercase mb-4 border-b border-slate-200 pb-2">Group 1 </div>
+                    <div class="font-bold text-indigo-600 uppercase mb-4 border-b border-slate-200 pb-2">Group 1</div>
                     <div class="grid grid-cols-3 gap-3 mb-4 text-center">
                         <div>
                             <label class="block text-[11px] text-slate-500 mb-1">FRAG</label>
@@ -101,7 +111,7 @@
                 </div>
                 
                 <div class="p-5 md:p-6 border border-slate-200 rounded-2xl bg-slate-50/50">
-                    <div class="font-bold text-emerald-600 uppercase mb-4 border-b border-slate-200 pb-2">Group 2 </div>
+                    <div class="font-bold text-emerald-600 uppercase mb-4 border-b border-slate-200 pb-2">Group 2</div>
                     <div class="grid grid-cols-3 gap-3 mb-4 text-center">
                         <div>
                             <label class="block text-[11px] text-slate-500 mb-1">FRAG</label>
@@ -169,8 +179,9 @@
         function saveAndUpdate() {
             const namesA = document.getElementById('gA_names').value;
             const namesB = document.getElementById('gB_names').value;
+            const limitA = document.getElementById('import_limit_A').value;
+            const limitB = document.getElementById('import_limit_B').value;
             
-            // อัปเดต UI ปุ่มลบ
             renderNameListUI('A', namesA);
             renderNameListUI('B', namesB);
 
@@ -178,14 +189,15 @@
                 t1: getValue('total_1'), t2: getValue('total_2'), t3: getValue('total_3'),
                 ga1: getValue('gA_p1'), ga2: getValue('gA_p2'), ga3: getValue('gA_p3'),
                 gb1: getValue('gB_p1'), gb2: getValue('gB_p2'), gb3: getValue('gB_p3'),
-                namesA: namesA, namesB: namesB
+                namesA: namesA, namesB: namesB,
+                limitA: limitA, limitB: limitB
             };
-            localStorage.setItem('bussaba_storage_v3', JSON.stringify(data));
+            localStorage.setItem('bussaba_storage_v4', JSON.stringify(data));
             update();
         }
 
         function loadData() {
-            const saved = localStorage.getItem('bussaba_storage_v3');
+            const saved = localStorage.getItem('bussaba_storage_v4');
             if (saved) {
                 const d = JSON.parse(saved);
                 ['total_1','total_2','total_3','gA_p1','gA_p2','gA_p3','gB_p1','gB_p2','gB_p3'].forEach(id => {
@@ -194,13 +206,15 @@
                 });
                 document.getElementById('gA_names').value = d.namesA || "";
                 document.getElementById('gB_names').value = d.namesB || "";
+                document.getElementById('import_limit_A').value = d.limitA || "";
+                document.getElementById('import_limit_B').value = d.limitB || "";
             }
             saveAndUpdate();
         }
 
         function resetData() { 
             if(confirm('คุณต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?')) { 
-                localStorage.removeItem('bussaba_storage_v3'); 
+                localStorage.removeItem('bussaba_storage_v4'); 
                 location.reload(); 
             } 
         }
@@ -208,7 +222,6 @@
         function st(n) { tab = n; update(); }
 
         function update() {
-            // Update Tab UI
             document.getElementById('t1').className = tab === 1 ? 'pb-3 px-2 transition-all tab-active whitespace-nowrap' : 'pb-3 px-2 transition-all text-slate-400 hover:text-slate-600 whitespace-nowrap';
             document.getElementById('t2').className = tab === 2 ? 'pb-3 px-2 transition-all tab-active whitespace-nowrap' : 'pb-3 px-2 transition-all text-slate-400 hover:text-slate-600 whitespace-nowrap';
 
@@ -225,7 +238,6 @@
             const namesB = [...new Set(rawB)];
             const totalPeople = namesA.length + namesB.length;
 
-            // Render Header Summary Counts
             const groupInfo = `
                 <div class="col-span-full grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
                     <div class="bg-indigo-50 border border-indigo-100 rounded-2xl p-4">
@@ -256,7 +268,6 @@
                 personTracker[name][type].end = globalIdx;
             };
 
-            // Calculation Logic
             if (tab === 1) {
                 let cur = 1;
                 namesA.forEach((name, i) => {
@@ -277,7 +288,6 @@
                 while(curTS <= t[2]) allItems.push({ n: 'TS', id: curTS++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
             }
 
-            // Render Location Summary (Bottom)
             Object.keys(personTracker).forEach(name => {
                 let detailsHTML = '';
                 Object.keys(personTracker[name]).forEach(type => {
@@ -289,7 +299,6 @@
                 locContainer.innerHTML += `<div class="bg-slate-800/40 border border-slate-800 p-4 rounded-2xl"><div class="text-base font-bold text-indigo-200 border-b border-slate-800 pb-2 mb-2">👤 ${name}</div>${detailsHTML}</div>`;
             });
 
-            // Render Result Cards (Per Page)
             for (let i = 0; i < allItems.length; i += 4) {
                 const chunk = allItems.slice(i, i + 4);
                 let html = `<div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col h-full hover:shadow-md transition-all"><div class="bg-slate-800 text-white p-4 flex justify-between items-center"><span class="text-lg font-bold">PAGE ${Math.floor(i/4)+1}</span><span class="text-indigo-300 text-[11px] font-mono">#${i+1}</span></div><div class="p-3 space-y-2.5 flex-grow bg-slate-50/30">`;
@@ -308,14 +317,29 @@
                 const text = await res.text();
                 const json = JSON.parse(text.substring(47).slice(0,-2));
                 const rows = json.table.rows;
+                
                 let incomingNames = [];
-                rows.forEach(row => { if(row.c && row.c[0] && row.c[0].v){ const v = String(row.c[0].v).trim(); if(v.toLowerCase() !== 'name' && v !== '') incomingNames.push(v); } });
+                rows.forEach(row => { 
+                    if(row.c && row.c[0] && row.c[0].v){ 
+                        const v = String(row.c[0].v).trim(); 
+                        if(v.toLowerCase() !== 'name' && v !== '') incomingNames.push(v); 
+                    } 
+                });
+
+                // ตรวจสอบลิมิตของกลุ่มที่เลือกดึงข้อมูล
+                const limitInput = document.getElementById(targetGroup === 'A' ? 'import_limit_A' : 'import_limit_B').value;
+                const limit = parseInt(limitInput) || 0;
 
                 if (targetGroup === 'A') {
+                    // หากใส่จำนวนลิมิต ให้ตัดข้อมูลตามที่ระบุ
+                    if(limit > 0) incomingNames = incomingNames.slice(0, limit);
                     document.getElementById('gA_names').value = incomingNames.join('\n');
                 } else {
                     const g1 = document.getElementById('gA_names').value.split('\n').map(n => n.trim());
-                    const filtered = incomingNames.filter(name => !g1.includes(name));
+                    // กรองรายชื่อที่ซ้ำกับ Group 1 ออกก่อน
+                    let filtered = incomingNames.filter(name => !g1.includes(name));
+                    // หากใส่จำนวนลิมิต ให้ตัดข้อมูลหลังจากกรองแล้ว
+                    if(limit > 0) filtered = filtered.slice(0, limit);
                     document.getElementById('gB_names').value = filtered.join('\n');
                 }
                 saveAndUpdate();
