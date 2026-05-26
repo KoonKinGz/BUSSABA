@@ -320,9 +320,9 @@
                 
                 let incomingNames = [];
                 rows.forEach(row => { 
-                    if(row.c && row.c[0] && row.c[0].v){ 
-                        const v = String(row.c[0].v).trim(); 
-                        if(v.toLowerCase() !== 'Guild Member' && v !== '') incomingNames.push(v); 
+                    if(row.c && row.c[1] && row.c[1].v){ 
+                        const v = String(row.c[1].v).trim(); 
+                        if(v.toLowerCase() !== 'name' && v !== '') incomingNames.push(v); 
                     } 
                 });
 
