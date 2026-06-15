@@ -73,7 +73,7 @@
                 <h3 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-widest flex items-center">
                     <span class="w-1.5 h-4 bg-indigo-600 rounded-full mr-2"></span> คลังไอเทม (Total Stock)
                 </h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                     <div class="p-4 rounded-2xl border bg-purple-50/20 border-purple-100 focus-within:border-purple-400 transition-all">
                         <label class="block text-xs font-bold text-purple-600 mb-1.5 uppercase tracking-wide">Fragment</label>
                         <input type="number" id="total_1" value="0" oninput="saveAndUpdate()" class="w-full bg-white text-slate-800 text-xl font-bold outline-none border-b-2 border-transparent focus:border-purple-500 pb-1">
@@ -85,6 +85,46 @@
                     <div class="p-4 rounded-2xl border bg-blue-50/20 border-blue-100 focus-within:border-blue-400 transition-all">
                         <label class="block text-xs font-bold text-blue-600 mb-1.5 uppercase tracking-wide">Time-Space</label>
                         <input type="number" id="total_3" value="0" oninput="saveAndUpdate()" class="w-full bg-white text-slate-800 text-xl font-bold outline-none border-b-2 border-transparent focus:border-blue-500 pb-1">
+                    </div>
+                </div>
+
+                <div class="border border-slate-100 rounded-2xl p-4 bg-slate-50/50">
+                    <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                        🎯 Rank (Set Stock Amount)
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                        <button onclick="quickSetStock(23, 90, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">🥇 Peak King</span>
+                            <span class="text-[10px] text-slate-400">Frag: 23 | LD: 90 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(21, 87, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">🥈 Supreme Warba</span>
+                            <span class="text-[10px] text-slate-400">Frag: 21 | LD: 87 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(20, 84, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">🥉 Honor Soul</span>
+                            <span class="text-[10px] text-slate-400">Frag: 20 | LD: 84 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(19, 81, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">✨ The Chosen One</span>
+                            <span class="text-[10px] text-slate-400">Frag: 19 | LD: 81 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(18, 78, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">👑 Glorious Legend</span>
+                            <span class="text-[10px] text-slate-400">Frag: 18 | LD: 78 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(17, 75, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">🔮 Immortal Myth</span>
+                            <span class="text-[10px] text-slate-400">Frag: 17 | LD: 75 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(16, 72, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">⚜️ Eternal Monarch</span>
+                            <span class="text-[10px] text-slate-400">Frag: 16 | LD: 72 | TS: 105</span>
+                        </button>
+                        <button onclick="quickSetStock(15, 69, 105)" class="p-2.5 bg-white border border-slate-200 rounded-xl hover:border-indigo-400 hover:bg-indigo-50/30 text-left transition-all group">
+                            <span class="font-bold block text-slate-700 group-hover:text-indigo-600">🌌 Omni Ruler</span>
+                            <span class="text-[10px] text-slate-400">Frag: 15 | LD: 69 | TS: 105</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -140,19 +180,32 @@
         <div id="res" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-10"></div>
 
         <div class="bg-slate-900 p-6 md:p-8 rounded-3xl shadow-xl text-white mb-12">
-            <h3 class="text-xl font-bold mb-6 flex items-center">
-                <span class="w-2 h-6 bg-indigo-500 rounded-full mr-3"></span> 📍 สรุปตำแหน่งการแจกรายคน 
-            </h3>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-800">
+                <h3 class="text-xl font-bold flex items-center">
+                    <span class="w-2 h-6 bg-indigo-500 rounded-full mr-3"></span> 📍 สรุปตำแหน่งการแจกรายคน 
+                </h3>
+                <button onclick="copySummaryToClipboard()" class="w-full sm:w-auto text-xs bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white px-4 py-2 rounded-xl font-medium transition-all shadow-md flex items-center justify-center gap-2">
+                    📋 คัดลอกสรุปทั้งหมด
+                </button>
+            </div>
             <div id="loc-summary" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
     </div>
 
     <script>
         let tab = 1;
+        let globalSummaryText = "";
 
         function getValue(id) { return parseInt(document.getElementById(id).value) || 0; }
 
-        // --- ฟังก์ชันสำหรับลบรายชื่อรายตัว ---
+        // --- แก้ไขเป็นฟังก์ชันแทนที่ค่า (Set แทนการ Add) ---
+        function quickSetStock(frag, ld, ts) {
+            document.getElementById('total_1').value = frag;
+            document.getElementById('total_2').value = ld;
+            document.getElementById('total_3').value = ts;
+            saveAndUpdate();
+        }
+
         function removeSingleName(group, nameToRemove) {
             const id = group === 'A' ? 'gA_names' : 'gB_names';
             const textarea = document.getElementById(id);
@@ -163,7 +216,6 @@
             saveAndUpdate();
         }
 
-        // --- ฟังก์ชันวาด UI รายชื่อพร้อมปุ่ม x ---
         function renderNameListUI(groupId, namesText) {
             const container = document.getElementById(groupId === 'A' ? 'gA_list' : 'gB_list');
             const names = namesText.split('\n').map(n => n.trim()).filter(n => n !== '');
@@ -288,16 +340,31 @@
                 while(curTS <= t[2]) allItems.push({ n: 'TS', id: curTS++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
             }
 
+            let textSummaryLines = [];
+            const currentTabName = tab === 1 ? "🧩 Puppet Fragment" : "🪶 Feathers (L-D / T-S)";
+            textSummaryLines.push(`📋 รายงานสรุปตำแหน่งการแจก [${currentTabName}]`);
+            textSummaryLines.push(`------------------------------------------`);
+
             Object.keys(personTracker).forEach(name => {
                 let detailsHTML = '';
+                let personTextLine = `👤 ${name}:`;
+                
                 Object.keys(personTracker[name]).forEach(type => {
                     const pos = personTracker[name][type];
                     const sP = Math.ceil(pos.start/4), eP = Math.ceil(pos.end/4);
                     const sS = (pos.start%4===0)?4:pos.start%4, eS = (pos.end%4===0)?4:pos.end%4;
+                    
                     detailsHTML += `<div class="mt-2 bg-slate-800 p-3 rounded-xl border border-slate-700/60"><div class="flex justify-between items-center mb-1.5"><span class="text-indigo-400 font-bold text-xs">${type}</span><span class="text-[10px] text-slate-400 font-mono">#${pos.start}-${pos.end}</span></div><div class="text-sm text-slate-300">หน้า <b class="text-white">${sP}</b> ช่อง <b class="text-white">${sS}</b> → หน้า <b class="text-white">${eP}</b> ช่อง <b class="text-white">${eS}</b></div></div>`;
+                    
+                    personTextLine += `\n  - ${type} (#${pos.start}-${pos.end}) -> หน้า ${sP} ช่อง ${sS} ถึง หน้า ${eP} ช่อง ${eS}`;
                 });
+                
                 locContainer.innerHTML += `<div class="bg-slate-800/40 border border-slate-800 p-4 rounded-2xl"><div class="text-base font-bold text-indigo-200 border-b border-slate-800 pb-2 mb-2">👤 ${name}</div>${detailsHTML}</div>`;
+                
+                textSummaryLines.push(personTextLine);
             });
+
+            globalSummaryText = textSummaryLines.length > 2 ? textSummaryLines.join('\n') : "ไม่มีข้อมูลสำหรับสรุปในแท็บนี้";
 
             for (let i = 0; i < allItems.length; i += 4) {
                 const chunk = allItems.slice(i, i + 4);
@@ -307,6 +374,14 @@
                 });
                 container.innerHTML += html + `</div></div>`;
             }
+        }
+
+        function copySummaryToClipboard() {
+            navigator.clipboard.writeText(globalSummaryText).then(() => {
+                alert('คัดลอกสรุปไปยัง Clipboard เรียบร้อยแล้ว!');
+            }).catch(err => {
+                alert('ไม่สามารถคัดลอกได้ กรุณาลองใหม่อีกครั้ง');
+            });
         }
 
         async function loadNamesFromGoogle(targetGroup){
@@ -326,19 +401,15 @@
                     } 
                 });
 
-                // ตรวจสอบลิมิตของกลุ่มที่เลือกดึงข้อมูล
                 const limitInput = document.getElementById(targetGroup === 'A' ? 'import_limit_A' : 'import_limit_B').value;
                 const limit = parseInt(limitInput) || 0;
 
                 if (targetGroup === 'A') {
-                    // หากใส่จำนวนลิมิต ให้ตัดข้อมูลตามที่ระบุ
                     if(limit > 0) incomingNames = incomingNames.slice(0, limit);
                     document.getElementById('gA_names').value = incomingNames.join('\n');
                 } else {
                     const g1 = document.getElementById('gA_names').value.split('\n').map(n => n.trim());
-                    // กรองรายชื่อที่ซ้ำกับ Group 1 ออกก่อน
                     let filtered = incomingNames.filter(name => !g1.includes(name));
-                    // หากใส่จำนวนลิมิต ให้ตัดข้อมูลหลังจากกรองแล้ว
                     if(limit > 0) filtered = filtered.slice(0, limit);
                     document.getElementById('gB_names').value = filtered.join('\n');
                 }
