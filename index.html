@@ -130,47 +130,52 @@
 
                 <div class="border border-slate-100 rounded-2xl p-4 bg-slate-50/50 mt-4">
                     <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                        🎲 เพิ่ม/สุ่มรายชื่อเติมช่องเหลือแจก
+                        🎲 รวมรายชื่อแล้วสุ่มแบ่ง Fragment / Light-Dark / Time-Space
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div class="p-3 bg-white border border-purple-100 rounded-xl">
-                            <div class="text-xs font-bold text-purple-600 mb-2">Fragment <span id="rand_info_frag" class="font-normal text-slate-400"></span></div>
-                            <textarea id="fill_names_frag" rows="2" placeholder="ใส่รายชื่อ (1 ชื่อ/บรรทัด) ถ้าเว้นว่างจะสุ่มชื่อให้แทน" class="w-full p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-purple-400 mb-2"></textarea>
-                            <div class="flex gap-2 mb-2">
-                                <input type="number" id="rand_count_frag" placeholder="จำนวนคน (ถ้าไม่ใส่ชื่อ)" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-purple-400">
-                                <input type="number" id="rand_qty_frag" placeholder="คนละ" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-purple-400">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-3 text-xs">
+                        <div class="p-2.5 bg-purple-50 border border-purple-100 rounded-xl text-center">
+                            <div class="text-purple-500 font-bold uppercase">Fragment เหลือ</div>
+                            <div id="rand_info_frag" class="text-lg font-black text-purple-700">0</div>
+                            <div class="flex items-center justify-center gap-1 mt-1.5">
+                                <label class="text-[10px] text-purple-400">คนละ</label>
+                                <input type="number" id="rand_qty_frag" value="1" min="1" class="w-14 p-1 border border-purple-200 rounded-lg text-center text-xs font-bold outline-none focus:border-purple-500">
                             </div>
-                            <div class="flex gap-2 mb-2">
-                                <button onclick="addToFill('frag')" class="flex-1 text-xs bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700 active:scale-95 transition-all font-medium">➕ เพิ่ม</button>
-                                <button onclick="clearRandomFill('frag')" class="text-xs bg-slate-100 text-slate-500 px-3 py-2 rounded-lg hover:bg-slate-200 active:scale-95 transition-all">ล้างทั้งหมด</button>
-                            </div>
-                            <div id="fill_list_frag" class="flex flex-wrap gap-1"></div>
                         </div>
-                        <div class="p-3 bg-white border border-amber-100 rounded-xl">
-                            <div class="text-xs font-bold text-amber-600 mb-2">Light-Dark <span id="rand_info_ld" class="font-normal text-slate-400"></span></div>
-                            <textarea id="fill_names_ld" rows="2" placeholder="ใส่รายชื่อ (1 ชื่อ/บรรทัด) ถ้าเว้นว่างจะสุ่มชื่อให้แทน" class="w-full p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-amber-400 mb-2"></textarea>
-                            <div class="flex gap-2 mb-2">
-                                <input type="number" id="rand_count_ld" placeholder="จำนวนคน (ถ้าไม่ใส่ชื่อ)" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-amber-400">
-                                <input type="number" id="rand_qty_ld" placeholder="คนละ" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-amber-400">
+                        <div class="p-2.5 bg-amber-50 border border-amber-100 rounded-xl text-center">
+                            <div class="text-amber-500 font-bold uppercase">Light-Dark เหลือ</div>
+                            <div id="rand_info_ld" class="text-lg font-black text-amber-700">0</div>
+                            <div class="flex items-center justify-center gap-1 mt-1.5">
+                                <label class="text-[10px] text-amber-400">คนละ</label>
+                                <input type="number" id="rand_qty_ld" value="1" min="1" class="w-14 p-1 border border-amber-200 rounded-lg text-center text-xs font-bold outline-none focus:border-amber-500">
                             </div>
-                            <div class="flex gap-2 mb-2">
-                                <button onclick="addToFill('ld')" class="flex-1 text-xs bg-amber-600 text-white py-2 rounded-lg hover:bg-amber-700 active:scale-95 transition-all font-medium">➕ เพิ่ม</button>
-                                <button onclick="clearRandomFill('ld')" class="text-xs bg-slate-100 text-slate-500 px-3 py-2 rounded-lg hover:bg-slate-200 active:scale-95 transition-all">ล้างทั้งหมด</button>
-                            </div>
-                            <div id="fill_list_ld" class="flex flex-wrap gap-1"></div>
                         </div>
-                        <div class="p-3 bg-white border border-blue-100 rounded-xl">
-                            <div class="text-xs font-bold text-blue-600 mb-2">Time-Space <span id="rand_info_ts" class="font-normal text-slate-400"></span></div>
-                            <textarea id="fill_names_ts" rows="2" placeholder="ใส่รายชื่อ (1 ชื่อ/บรรทัด) ถ้าเว้นว่างจะสุ่มชื่อให้แทน" class="w-full p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-blue-400 mb-2"></textarea>
-                            <div class="flex gap-2 mb-2">
-                                <input type="number" id="rand_count_ts" placeholder="จำนวนคน (ถ้าไม่ใส่ชื่อ)" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-blue-400">
-                                <input type="number" id="rand_qty_ts" placeholder="คนละ" min="0" class="w-1/2 p-2 border border-slate-200 rounded-lg text-xs outline-none focus:border-blue-400">
+                        <div class="p-2.5 bg-blue-50 border border-blue-100 rounded-xl text-center">
+                            <div class="text-blue-500 font-bold uppercase">Time-Space เหลือ</div>
+                            <div id="rand_info_ts" class="text-lg font-black text-blue-700">0</div>
+                            <div class="flex items-center justify-center gap-1 mt-1.5">
+                                <label class="text-[10px] text-blue-400">คนละ</label>
+                                <input type="number" id="rand_qty_ts" value="1" min="1" class="w-14 p-1 border border-blue-200 rounded-lg text-center text-xs font-bold outline-none focus:border-blue-500">
                             </div>
-                            <div class="flex gap-2 mb-2">
-                                <button onclick="addToFill('ts')" class="flex-1 text-xs bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 active:scale-95 transition-all font-medium">➕ เพิ่ม</button>
-                                <button onclick="clearRandomFill('ts')" class="text-xs bg-slate-100 text-slate-500 px-3 py-2 rounded-lg hover:bg-slate-200 active:scale-95 transition-all">ล้างทั้งหมด</button>
-                            </div>
-                            <div id="fill_list_ts" class="flex flex-wrap gap-1"></div>
+                        </div>
+                    </div>
+                    <textarea id="pool_names" rows="3" placeholder="ใส่รายชื่อทั้งหมดรวมกัน (1 ชื่อ/บรรทัด) ระบบจะสุ่มลำดับแล้วแบ่งให้แต่ละคนได้รับ Fragment, Light-Dark หรือ Time-Space ตามจำนวนที่เหลือ" class="w-full p-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-400 mb-3"></textarea>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <button onclick="autoAssignRandom()" class="flex-1 text-sm bg-indigo-600 text-white py-2.5 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all font-medium">🎲 สุ่มแจกเลย</button>
+                        <button onclick="clearAllRandomFill()" class="text-sm bg-slate-100 text-slate-500 px-4 py-2.5 rounded-xl hover:bg-slate-200 active:scale-95 transition-all font-medium">ล้างผลการสุ่มทั้งหมด</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
+                        <div>
+                            <div class="text-[11px] font-bold text-purple-500 uppercase mb-1">ได้ Fragment</div>
+                            <div id="fill_list_frag" class="flex flex-wrap gap-1 bg-white/60 p-2 rounded-lg min-h-[36px]"></div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] font-bold text-amber-500 uppercase mb-1">ได้ Light-Dark</div>
+                            <div id="fill_list_ld" class="flex flex-wrap gap-1 bg-white/60 p-2 rounded-lg min-h-[36px]"></div>
+                        </div>
+                        <div>
+                            <div class="text-[11px] font-bold text-blue-500 uppercase mb-1">ได้ Time-Space</div>
+                            <div id="fill_list_ts" class="flex flex-wrap gap-1 bg-white/60 p-2 rounded-lg min-h-[36px]"></div>
                         </div>
                     </div>
                 </div>
@@ -255,33 +260,65 @@
             saveAndUpdate();
         }
 
-        function addToFill(type) {
-            const qty = parseInt(document.getElementById('rand_qty_' + type).value) || 0;
-            if (qty <= 0) {
-                alert('กรุณาระบุจำนวนที่ได้คนละ ให้มากกว่า 0');
+        // คำนวณจำนวนที่เหลือแจกจริงของแต่ละคลัง (Stock ทั้งหมด - ที่แจกให้ Group A/B - ที่สุ่มแจกไปแล้ว)
+        function computeRemaining() {
+            const t = [getValue('total_1'), getValue('total_2'), getValue('total_3')];
+            const rawA = document.getElementById('gA_names').value.split('\n').map(n => n.trim()).filter(n => n !== '');
+            const rawB = document.getElementById('gB_names').value.split('\n').map(n => n.trim()).filter(n => n !== '');
+            const namesA = [...new Set(rawA)];
+            const namesB = [...new Set(rawB)];
+            const gA = [getValue('gA_p1'), getValue('gA_p2'), getValue('gA_p3')];
+            const gB = [getValue('gB_p1'), getValue('gB_p2'), getValue('gB_p3')];
+            const randKeys = ['frag', 'ld', 'ts'];
+            const remaining = [0, 0, 0];
+            for (let idx = 0; idx < 3; idx++) {
+                let used = namesA.length * gA[idx] + namesB.length * gB[idx];
+                randomFillData[randKeys[idx]].forEach(r => { used += r.qty; });
+                remaining[idx] = Math.max(t[idx] - used, 0);
+            }
+            return remaining;
+        }
+
+        function autoAssignRandom() {
+            const textarea = document.getElementById('pool_names');
+            const names = textarea.value.split('\n').map(n => n.trim()).filter(n => n !== '');
+            if (names.length === 0) {
+                alert('กรุณาใส่รายชื่อก่อนสุ่มแจก');
                 return;
             }
-            const namesTextarea = document.getElementById('fill_names_' + type);
-            const typedNames = namesTextarea.value.split('\n').map(n => n.trim()).filter(n => n !== '');
 
-            if (typedNames.length > 0) {
-                typedNames.forEach(name => { randomFillData[type].push({ name: name, qty: qty }); });
-                namesTextarea.value = '';
-            } else {
-                const count = parseInt(document.getElementById('rand_count_' + type).value) || 0;
-                if (count <= 0) {
-                    alert('กรุณาใส่รายชื่อ หรือระบุจำนวนคนที่ต้องการสุ่ม');
-                    return;
-                }
-                let startIdx = randomFillData[type].length;
-                for (let i = 0; i < count; i++) {
-                    startIdx++;
-                    randomFillData[type].push({ name: `${RAND_NAME_PREFIX[type]}${startIdx}`, qty: qty });
-                }
-                document.getElementById('rand_count_' + type).value = '';
+            // สุ่มสลับลำดับรายชื่อ (Fisher-Yates shuffle)
+            const shuffled = [...names];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
-            document.getElementById('rand_qty_' + type).value = '';
+
+            const remaining = computeRemaining(); // [frag, ld, ts]
+            const randKeys = ['frag', 'ld', 'ts'];
+            const perQty = randKeys.map(k => Math.max(parseInt(document.getElementById('rand_qty_' + k).value) || 1, 1));
+            let idx = 0;
+            const assignedCount = [0, 0, 0];
+
+            randKeys.forEach((key, typeIdx) => {
+                const qty = perQty[typeIdx];
+                let left = remaining[typeIdx];
+                while (left > 0 && idx < shuffled.length) {
+                    const giveQty = Math.min(qty, left);
+                    randomFillData[key].push({ name: shuffled[idx], qty: giveQty });
+                    assignedCount[typeIdx]++;
+                    left -= giveQty;
+                    idx++;
+                }
+            });
+
+            const leftover = shuffled.length - idx;
+            textarea.value = leftover > 0 ? shuffled.slice(idx).join('\n') : '';
             saveAndUpdate();
+
+            let msg = `สุ่มแจกเรียบร้อย!\nFragment: ${assignedCount[0]} คน (คนละ ${perQty[0]})\nLight-Dark: ${assignedCount[1]} คน (คนละ ${perQty[1]})\nTime-Space: ${assignedCount[2]} คน (คนละ ${perQty[2]})`;
+            if (leftover > 0) msg += `\n\n⚠️ ของหมด เหลือ ${leftover} คนที่ยังไม่ได้รับ (ชื่อยังอยู่ในกล่องข้อความ)`;
+            alert(msg);
         }
 
         function removeFillEntry(type, entryIndex) {
@@ -301,10 +338,11 @@
             `).join('');
         }
 
-        function clearRandomFill(type) {
-            if (randomFillData[type].length === 0) return;
-            if (confirm('ล้างรายชื่อสุ่มของช่องนี้ใช่หรือไม่?')) {
-                randomFillData[type] = [];
+        function clearAllRandomFill() {
+            const total = randomFillData.frag.length + randomFillData.ld.length + randomFillData.ts.length;
+            if (total === 0) return;
+            if (confirm('ล้างผลการสุ่มแจกทั้งหมดใช่หรือไม่?')) {
+                randomFillData = { frag: [], ld: [], ts: [] };
                 saveAndUpdate();
             }
         }
@@ -418,14 +456,10 @@
                 Math.max(t[2] - distributed[2], 0)
             ];
 
-            // อัปเดตตัวเลขจำนวนคนสุ่มที่เติมไปแล้วของแต่ละคลัง
-            randKeys.forEach(k => {
+            // อัปเดตตัวเลข "เหลือ" ของแต่ละคลังในกล่องสุ่มแจก
+            randKeys.forEach((k, i) => {
                 const infoEl = document.getElementById('rand_info_' + k);
-                if (infoEl) {
-                    const cnt = randomFillData[k].length;
-                    const totalQty = randomFillData[k].reduce((s, r) => s + r.qty, 0);
-                    infoEl.textContent = cnt > 0 ? `(สุ่มแล้ว ${cnt} คน / ${totalQty} ชิ้น)` : '';
-                }
+                if (infoEl) infoEl.textContent = remaining[i];
             });
 
             const stockSummary = `
