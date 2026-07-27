@@ -159,8 +159,33 @@
                         </div>
                     </div>
                     <textarea id="pool_names" rows="3" placeholder="ใส่รายชื่อทั้งหมดรวมกัน (1 ชื่อ/บรรทัด) ระบบจะสุ่มลำดับแล้วแบ่งให้แต่ละคนได้รับ Fragment, Light-Dark หรือ Time-Space ตามจำนวนที่เหลือ" class="w-full p-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-400 mb-3"></textarea>
+                    <div class="mb-3">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">หัวข้อต่อท้ายรายชื่อ (ไม่บังคับ)</label>
+                        <div class="flex flex-col sm:flex-row gap-2">
+                            <select id="pool_topic" class="w-full sm:w-64 p-2.5 border border-slate-200 rounded-xl text-sm outline-none focus:border-indigo-400 bg-white">
+                                <option value="">— ไม่ระบุ —</option>
+                                <option value="Guild League">Guild League</option>
+                                <option value="League Prize">League Prize</option>
+                                <option value="Overrun">Overrun</option>
+                            </select>
+                            <button onclick="applyTopicToAll()" class="text-sm bg-slate-700 text-white px-4 py-2 rounded-xl hover:bg-slate-800 active:scale-95 transition-all font-medium whitespace-nowrap">🏷️ ใส่หัวข้อนี้ให้ทุกรายชื่อ</button>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase mb-1">วิธีการแจก</label>
+                        <div class="flex gap-4 text-sm">
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="assign_mode" value="random" checked class="accent-indigo-600">
+                                🎲 สุ่มลำดับ
+                            </label>
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input type="radio" name="assign_mode" value="sequential" class="accent-indigo-600">
+                                📋 เรียงลำดับตามที่พิมพ์
+                            </label>
+                        </div>
+                    </div>
                     <div class="flex flex-col sm:flex-row gap-2">
-                        <button onclick="autoAssignRandom()" class="flex-1 text-sm bg-indigo-600 text-white py-2.5 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all font-medium">🎲 สุ่มแจกเลย</button>
+                        <button onclick="autoAssignRandom()" class="flex-1 text-sm bg-indigo-600 text-white py-2.5 rounded-xl hover:bg-indigo-700 active:scale-95 transition-all font-medium">✅ แจกเลย</button>
                         <button onclick="clearAllRandomFill()" class="text-sm bg-slate-100 text-slate-500 px-4 py-2.5 rounded-xl hover:bg-slate-200 active:scale-95 transition-all font-medium">ล้างผลการสุ่มทั้งหมด</button>
                     </div>
 
@@ -279,6 +304,10 @@
             return remaining;
         }
 
+        function getDisplayName(entry) {
+            return entry.topic ? `${entry.name} (${entry.topic})` : entry.name;
+        }
+
         function autoAssignRandom() {
             const textarea = document.getElementById('pool_names');
             const names = textarea.value.split('\n').map(n => n.trim()).filter(n => n !== '');
@@ -287,16 +316,21 @@
                 return;
             }
 
-            // สุ่มสลับลำดับรายชื่อ (Fisher-Yates shuffle)
-            const shuffled = [...names];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            const mode = document.querySelector('input[name="assign_mode"]:checked').value;
+            let shuffled = [...names];
+            if (mode === 'random') {
+                // สุ่มสลับลำดับรายชื่อ (Fisher-Yates shuffle)
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
             }
+            // ถ้าเป็นโหมดเรียงลำดับ ใช้ลำดับตามที่พิมพ์ไว้เลย ไม่ต้องสลับ
 
             const remaining = computeRemaining(); // [frag, ld, ts]
             const randKeys = ['frag', 'ld', 'ts'];
             const perQty = randKeys.map(k => Math.max(parseInt(document.getElementById('rand_qty_' + k).value) || 1, 1));
+            const topic = document.getElementById('pool_topic').value.trim();
             let idx = 0;
             const assignedCount = [0, 0, 0];
 
@@ -305,7 +339,7 @@
                 let left = remaining[typeIdx];
                 while (left > 0 && idx < shuffled.length) {
                     const giveQty = Math.min(qty, left);
-                    randomFillData[key].push({ name: shuffled[idx], qty: giveQty });
+                    randomFillData[key].push({ name: shuffled[idx], qty: giveQty, topic: topic });
                     assignedCount[typeIdx]++;
                     left -= giveQty;
                     idx++;
@@ -316,9 +350,43 @@
             textarea.value = leftover > 0 ? shuffled.slice(idx).join('\n') : '';
             saveAndUpdate();
 
-            let msg = `สุ่มแจกเรียบร้อย!\nFragment: ${assignedCount[0]} คน (คนละ ${perQty[0]})\nLight-Dark: ${assignedCount[1]} คน (คนละ ${perQty[1]})\nTime-Space: ${assignedCount[2]} คน (คนละ ${perQty[2]})`;
+            const modeLabel = mode === 'random' ? 'สุ่มลำดับ' : 'เรียงลำดับตามที่พิมพ์';
+            let msg = `แจกเรียบร้อย! (${modeLabel})\nFragment: ${assignedCount[0]} คน (คนละ ${perQty[0]})\nLight-Dark: ${assignedCount[1]} คน (คนละ ${perQty[1]})\nTime-Space: ${assignedCount[2]} คน (คนละ ${perQty[2]})`;
             if (leftover > 0) msg += `\n\n⚠️ ของหมด เหลือ ${leftover} คนที่ยังไม่ได้รับ (ชื่อยังอยู่ในกล่องข้อความ)`;
             alert(msg);
+        }
+
+        function stripTopicSuffix(name) {
+            return name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+        }
+
+        function applyTopicToAll() {
+            const topic = document.getElementById('pool_topic').value.trim();
+            const randKeys = ['frag', 'ld', 'ts'];
+            const randTotal = randKeys.reduce((s, k) => s + randomFillData[k].length, 0);
+
+            const groupIds = ['gA_names', 'gB_names'];
+            let groupTotal = 0;
+            groupIds.forEach(id => {
+                const ta = document.getElementById(id);
+                const lines = ta.value.split('\n').map(n => n.trim()).filter(n => n !== '');
+                groupTotal += lines.length;
+                const updated = lines.map(n => {
+                    const base = stripTopicSuffix(n);
+                    return topic ? `${base} (${topic})` : base;
+                });
+                ta.value = updated.join('\n');
+            });
+
+            const total = randTotal + groupTotal;
+            if (total === 0) {
+                alert('ยังไม่มีรายชื่อในระบบเลย');
+                return;
+            }
+
+            randKeys.forEach(k => { randomFillData[k].forEach(entry => { entry.topic = topic; }); });
+            saveAndUpdate();
+            alert(topic ? `ใส่หัวข้อ "${topic}" ให้ทุกรายชื่อ (${total} คน) เรียบร้อยแล้ว` : `ล้างหัวข้อออกจากทุกรายชื่อ (${total} คน) เรียบร้อยแล้ว`);
         }
 
         function removeFillEntry(type, entryIndex) {
@@ -332,7 +400,7 @@
             if (randomFillData[type].length === 0) { container.innerHTML = ''; return; }
             container.innerHTML = randomFillData[type].map((entry, idx) => `
                 <span class="name-tag text-[11px] py-0.5 px-2">
-                    ${entry.name} <b class="ml-1 opacity-60">x${entry.qty}</b>
+                    ${getDisplayName(entry)} <b class="ml-1 opacity-60">x${entry.qty}</b>
                     <span class="btn-remove" style="font-size:1rem" onclick="removeFillEntry('${type}', ${idx})">&times;</span>
                 </span>
             `).join('');
@@ -515,7 +583,8 @@
                     for(let q=0; q < gB.p[0]; q++) if(cur <= t[0]) { logPos(name, 'FRAG', allItems.length+1); allItems.push({ n: 'Fragment', id: cur++, o: name, c: `cp-${(i+6)%10}` }); }
                 });
                 randomFillData.frag.forEach(r => {
-                    for(let q=0; q < r.qty; q++) if(cur <= t[0]) { logPos(r.name, 'FRAG', allItems.length+1); allItems.push({ n: 'Fragment', id: cur++, o: r.name, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
+                    const dn = getDisplayName(r);
+                    for(let q=0; q < r.qty; q++) if(cur <= t[0]) { logPos(dn, 'FRAG', allItems.length+1); allItems.push({ n: 'Fragment', id: cur++, o: dn, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
                 });
                 while(cur <= t[0]) allItems.push({ n: 'Fragment', id: cur++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
             } else {
@@ -523,14 +592,16 @@
                 namesA.forEach((name, i) => { for(let q=0; q < gA.p[1]; q++) if(curLD <= t[1]) { logPos(name, 'LD', allItems.length+1); allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+1)%10}` }); } });
                 namesB.forEach((name, i) => { for(let q=0; q < gB.p[1]; q++) if(curLD <= t[1]) { logPos(name, 'LD', allItems.length+1); allItems.push({ n: 'LD', id: curLD++, o: name, c: `cp-${(i+6)%10}` }); } });
                 randomFillData.ld.forEach(r => {
-                    for(let q=0; q < r.qty; q++) if(curLD <= t[1]) { logPos(r.name, 'LD', allItems.length+1); allItems.push({ n: 'LD', id: curLD++, o: r.name, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
+                    const dn = getDisplayName(r);
+                    for(let q=0; q < r.qty; q++) if(curLD <= t[1]) { logPos(dn, 'LD', allItems.length+1); allItems.push({ n: 'LD', id: curLD++, o: dn, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
                 });
                 while(curLD <= t[1]) allItems.push({ n: 'LD', id: curLD++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
                 
                 namesA.forEach((name, i) => { for(let q=0; q < gA.p[2]; q++) if(curTS <= t[2]) { logPos(name, 'TS', allItems.length+1); allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+1)%10}` }); } });
                 namesB.forEach((name, i) => { for(let q=0; q < gB.p[2]; q++) if(curTS <= t[2]) { logPos(name, 'TS', allItems.length+1); allItems.push({ n: 'TS', id: curTS++, o: name, c: `cp-${(i+6)%10}` }); } });
                 randomFillData.ts.forEach(r => {
-                    for(let q=0; q < r.qty; q++) if(curTS <= t[2]) { logPos(r.name, 'TS', allItems.length+1); allItems.push({ n: 'TS', id: curTS++, o: r.name, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
+                    const dn = getDisplayName(r);
+                    for(let q=0; q < r.qty; q++) if(curTS <= t[2]) { logPos(dn, 'TS', allItems.length+1); allItems.push({ n: 'TS', id: curTS++, o: dn, c: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' }); }
                 });
                 while(curTS <= t[2]) allItems.push({ n: 'TS', id: curTS++, o: 'เหลือแจก', c: 'bg-white text-slate-300 border-dashed border-slate-300' });
             }
